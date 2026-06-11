@@ -2,14 +2,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const video = document.getElementById('videoPlayer');
     const loading = document.getElementById('loading');
     
-    // Route stream through our server proxy to bypass HTTPS Mixed Content blocking
-    const videoSrc = '/proxy/T-Sports.kutta/video.m3u8';
+    // The original HTTP stream URL
+    const videoSrc = 'http://103.151.61.12/T-Sports.kutta/video.m3u8';
+
+    // Custom loader to intercept HLS.js requests and route them through an HTTPS CORS proxy.
+    // This allows the stream to play on static sites like GitHub Pages without Mixed Content errors.
+    class ProxyLoader extends Hls.DefaultConfig.loader {
+        constructor(config) {
+            super(config);
+            const originalLoad = this.load.bind(this);
+            this.load = function (context, config, callbacks) {
+                if (context.url && context.url.startsWith('http://')) {
+                    // Route via a public HTTPS CORS proxy
+                    context.url = 'https://corsproxy.io/?' + encodeURIComponent(context.url);
+                }
+                originalLoad(context, config, callbacks);
+            };
+        }
+    }
 
     function initPlayer() {
         if (Hls.isSupported()) {
             const hls = new Hls({
                 debug: false,
-                enableWorker: true
+                enableWorker: true,
+                pLoader: ProxyLoader,
+                fLoader: ProxyLoader
             });
             
             hls.loadSource(videoSrc);
@@ -17,14 +35,14 @@ document.addEventListener('DOMContentLoaded', () => {
             
             hls.on(Hls.Events.MANIFEST_PARSED, function () {
                 loading.style.display = 'none';
-                console.log('Stream loaded!');
+                console.log('Stream loaded via CORS proxy!');
             });
             
             hls.on(Hls.Events.ERROR, function (event, data) {
                 if (data.fatal) {
                     switch (data.type) {
                         case Hls.ErrorTypes.NETWORK_ERROR:
-                            loading.innerText = 'NETWORK ERROR: Stream offline or blocked (Mixed Content?)';
+                            loading.innerText = 'NETWORK ERROR: Proxy down or stream offline.';
                             loading.style.color = 'red';
                             break;
                         case Hls.ErrorTypes.MEDIA_ERROR:
@@ -40,8 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            // Fallback for native HLS support (e.g., Safari)
-            video.src = videoSrc;
+            // Fallback for native HLS (Safari/iOS)
+            // Note: iOS Safari does not support custom HLS.js loaders, so we try to load the CORS proxy directly
+            video.src = 'https://corsproxy.io/?' + encodeURIComponent(videoSrc);
             video.addEventListener('loadedmetadata', function () {
                 loading.style.display = 'none';
             });
