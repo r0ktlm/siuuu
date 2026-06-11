@@ -39,14 +39,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('videoPlayer');
             const loading = document.getElementById('loading');
-            
-            // Check if we are running locally (http/localhost) or on HTTPS (GitHub Pages/Render)
-            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || !window.location.hostname;
-            
-            // Use direct HTTP if local (to avoid SSL certificate warning), otherwise use HTTPS (requires accepting the self-signed cert once in a new tab)
-            const videoSrc = isLocal 
-                ? 'http://103.151.61.12/T-Sports.kutta/video.m3u8' 
-                : 'https://103.151.61.12/T-Sports.kutta/video.m3u8';
+            const videoSrc = 'http://103.151.61.12/T-Sports.kutta/video.m3u8';
 
             function initPlayer() {
                 if (Hls.isSupported()) {
@@ -67,11 +60,7 @@
                         if (data.fatal) {
                             switch (data.type) {
                                 case Hls.ErrorTypes.NETWORK_ERROR:
-                                    if (!isLocal) {
-                                        loading.innerHTML = 'NETWORK ERROR: Stream offline OR browser blocked the uncertified HTTPS connection.<br><br><a href="https://103.151.61.12/T-Sports.kutta/video.m3u8" target="_blank" style="color: #0f0; text-decoration: underline;">[ CLICK HERE TO WHITELIST CERTIFICATE ]</a><br>Then click "Advanced" -> "Proceed anyway", and refresh this page.';
-                                    } else {
-                                        loading.innerText = 'NETWORK ERROR: Stream offline or connection failed.';
-                                    }
+                                    loading.innerText = 'NETWORK ERROR: Stream offline or blocked by browser.';
                                     loading.style.color = 'red';
                                     break;
                                 case Hls.ErrorTypes.MEDIA_ERROR:
