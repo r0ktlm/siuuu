@@ -28,6 +28,7 @@
             <div class="video-container">
                 <video id="videoPlayer" controls autoplay muted playsinline></video>
                 <div id="loading" class="overlay-text">LOADING SIGNAL...</div>
+                <div id="unmuteOverlay" class="unmute-overlay" style="display: none;">[ CLICK TO UNMUTE ]</div>
             </div>
             <div class="marquee-container">
                 <marquee scrollamount="6">>>> LIVE WORLD CUP MATCH - STAY CONNECTED - CHAT WITH OTHER FANS BELOW <<<</marquee>
@@ -39,7 +40,33 @@
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('videoPlayer');
             const loading = document.getElementById('loading');
-            const videoSrc = 'https://live.kooran3.cfd/live1/index.m3u8';
+            const unmuteOverlay = document.getElementById('unmuteOverlay');
+            const videoSrc = 'http://103.151.61.12/T-Sports.kutta/video.m3u8';
+
+            const unmuteVideo = () => {
+                video.muted = false;
+                unmuteOverlay.style.display = 'none';
+            };
+
+            unmuteOverlay.addEventListener('click', (e) => {
+                e.stopPropagation();
+                unmuteVideo();
+            });
+
+            video.addEventListener('click', (e) => {
+                if (video.muted) {
+                    e.preventDefault();
+                    unmuteVideo();
+                }
+            });
+
+            video.addEventListener('volumechange', () => {
+                if (!video.muted) {
+                    unmuteOverlay.style.display = 'none';
+                } else {
+                    unmuteOverlay.style.display = 'block';
+                }
+            });
 
             function initPlayer() {
                 if (Hls.isSupported()) {
@@ -53,6 +80,9 @@
                     
                     hls.on(Hls.Events.MANIFEST_PARSED, function () {
                         loading.style.display = 'none';
+                        if (video.muted) {
+                            unmuteOverlay.style.display = 'block';
+                        }
                         video.play().catch(err => {
                             console.log("Autoplay blocked, waiting for interaction:", err);
                         });
@@ -82,6 +112,9 @@
                     video.src = videoSrc;
                     video.addEventListener('loadedmetadata', function () {
                         loading.style.display = 'none';
+                        if (video.muted) {
+                            unmuteOverlay.style.display = 'block';
+                        }
                     });
                     video.addEventListener('error', function () {
                         loading.innerText = 'ERROR: Cannot load stream.';

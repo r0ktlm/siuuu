@@ -153,3 +153,33 @@ marquee {
   border-bottom: 1px solid #000;
   border-right: 1px solid #000;
 }
+
+.unmute-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--window-bg);
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #000;
+  border-right: 2px solid #000;
+  color: #000;
+  padding: 10px 18px;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  user-select: none;
+}
+
+.unmute-overlay:active {
+  border-top: 2px solid #000;
+  border-left: 2px solid #000;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+}
