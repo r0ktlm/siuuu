@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const video = document.getElementById('videoPlayer');
     const loading = document.getElementById('loading');
     
-    // The provided HTTP m3u8 stream
-    const videoSrc = 'http://103.151.61.12/T-Sports.kutta/video.m3u8';
+    // Route stream through our server proxy to bypass HTTPS Mixed Content blocking
+    const videoSrc = '/proxy/T-Sports.kutta/video.m3u8';
 
     function initPlayer() {
         if (Hls.isSupported()) {
