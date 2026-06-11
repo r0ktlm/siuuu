@@ -1,3 +1,0 @@
-@echo off
-echo Opening retro player locally...
-start index.html
