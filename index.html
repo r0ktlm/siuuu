@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Cup Live - Retro Stream</title>
+    <!-- Mixed content warning: If deployed to HTTPS (like Render), HTTP streams may be blocked by browsers -->
+    <meta name="description" content="Retro World Cup Live Video Player">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+
+    <header>
+        <h1>[ World Cup Live Stream ]</h1>
+    </header>
+
+    <main class="window">
+        <div class="title-bar">
+            <div class="title-bar-text">VideoPlayer.exe</div>
+            <div class="title-bar-controls">
+                <button class="btn" aria-label="Minimize">_</button>
+                <button class="btn" aria-label="Maximize">[]</button>
+                <button class="btn" aria-label="Close">X</button>
+            </div>
+        </div>
+        <div class="content">
+            <div class="video-container">
+                <video id="videoPlayer" controls></video>
+                <div id="loading" class="overlay-text">LOADING SIGNAL...</div>
+            </div>
+            <div class="marquee-container">
+                <marquee scrollamount="6">>>> LIVE WORLD CUP MATCH - STAY CONNECTED - CHAT WITH OTHER FANS BELOW <<<</marquee>
+            </div>
+        </div>
+    </main>
+
+    <script src="main.js"></script>
+
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6a2b15908b98c91c2ded96dd/1jqs4ofdg';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+</body>
+</html>
