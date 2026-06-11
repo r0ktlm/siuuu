@@ -127,9 +127,44 @@
             }
 
             initPlayer();
+
+            // Chat Window Toggle Logic
+            const chatLauncher = document.getElementById('chatLauncher');
+            const chatWindow = document.getElementById('chatWindow');
+            const closeChatBtn = document.getElementById('closeChatBtn');
+
+            chatLauncher.addEventListener('click', () => {
+                chatWindow.style.display = 'flex';
+                chatLauncher.style.display = 'none';
+            });
+
+            closeChatBtn.addEventListener('click', () => {
+                chatWindow.style.display = 'none';
+                chatLauncher.style.display = 'block';
+            });
         });
     </script>
 
+    <!-- Minnit Chat HTML & Script -->
+    <button id="chatLauncher" class="chat-launcher">[ CHAT ]</button>
 
+    <div id="chatWindow" class="chat-window window" style="display: none;">
+        <div class="title-bar">
+            <div class="title-bar-text">ChatRoom.exe</div>
+            <div class="title-bar-controls">
+                <button class="btn" id="closeChatBtn" aria-label="Close">X</button>
+            </div>
+        </div>
+        <div class="content">
+            <div class="chat-iframe-container">
+                <span class="minnit-chat-sembed" data-chatname="https://organizations.minnit.chat/791982019011557/c/Main?embed" data-style="width:100%; height:100%;" data-version="1.55">Chat</span>
+            </div>
+            <p class="powered-by-minnit">
+                <a href="https://minnit.chat" target="_blank">Get your own free chatroom with Minnit Chat</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="https://minnit.chat/js/embed.js?c=1772345192" defer></script>
 </body>
 </html>
