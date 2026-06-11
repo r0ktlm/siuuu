@@ -26,7 +26,7 @@
         </div>
         <div class="content">
             <div class="video-container">
-                <video id="videoPlayer" controls></video>
+                <video id="videoPlayer" controls autoplay muted playsinline></video>
                 <div id="loading" class="overlay-text">LOADING SIGNAL...</div>
             </div>
             <div class="marquee-container">
@@ -53,6 +53,9 @@
                     
                     hls.on(Hls.Events.MANIFEST_PARSED, function () {
                         loading.style.display = 'none';
+                        video.play().catch(err => {
+                            console.log("Autoplay blocked, waiting for interaction:", err);
+                        });
                         console.log('Stream loaded directly!');
                     });
                     
